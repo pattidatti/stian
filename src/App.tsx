@@ -134,7 +134,7 @@ function reducer(state: SimState, action: SimAction): SimState {
         grid: action.grid,
         resources: action.resources,
         currentTick: newTick,
-        playheadIndex: state.snapshots.length,
+        playheadIndex: Math.max(0, state.snapshots.length - 1),
         stats,
       }
     }
@@ -144,7 +144,7 @@ function reducer(state: SimState, action: SimAction): SimState {
       const branchPoints = action.snapshot.isBranch
         ? [...state.branchPoints, snapshots.length - 1]
         : state.branchPoints
-      return { ...state, snapshots, branchPoints }
+      return { ...state, snapshots, branchPoints, playheadIndex: snapshots.length - 1 }
     }
 
     case 'PAUSE':
@@ -235,6 +235,9 @@ export default function App() {
   const resourceEngineRef = useRef<ResourceEngine | null>(null)
   const snapshotManagerRef = useRef(new SnapshotManager())
   const tickIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // Always-fresh ref to avoid stale closures in setInterval
+  const stateRef = useRef(state)
+  useEffect(() => { stateRef.current = state }, [state])
 
   // Sync fire engine when params change
   useEffect(() => {
@@ -270,24 +273,25 @@ export default function App() {
     tickIntervalRef.current = setInterval(() => {
       const fe = fireEngineRef.current
       const re = resourceEngineRef.current
-      if (!fe || !re || !state.gridBounds) return
+      const s = stateRef.current  // always fresh
+      if (!fe || !re || !s.gridBounds) return
 
       const newGrid = fe.step()
       re.setGrid(newGrid)
 
-      // Update resources: move targets toward nearest fire for idle resources
-      const updatedResources = re.step(state.resources)
+      const updatedResources = re.step(s.resources)
 
       dispatch({ type: 'TICK', grid: newGrid, resources: updatedResources })
 
       // Save snapshot every 5 ticks
-      if (state.currentTick % 5 === 0) {
+      const nextTick = s.currentTick + 1
+      if (nextTick % 5 === 0) {
         const snap = snapshotManagerRef.current.take(
-          state.currentTick + 1,
+          nextTick,
           newGrid,
-          state.gridBounds,
+          s.gridBounds,
           updatedResources,
-          state.fireParams,
+          s.fireParams,
         )
         dispatch({ type: 'SAVE_SNAPSHOT', snapshot: snap })
       }
@@ -340,13 +344,19 @@ export default function App() {
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
-      if (state.ignitionMode) {
+      const s = stateRef.current
+      if (s.ignitionMode) {
         const fe = fireEngineRef.current
         if (fe) fe.ignite(row, col)
         dispatch({ type: 'IGNITE', row, col })
+      } else if (s.pendingResourceType) {
+        const cell = s.grid?.[row][col]
+        if (!cell) return
+        const resource = createResource(s.pendingResourceType, cell.lat, cell.lon)
+        dispatch({ type: 'ADD_RESOURCE', resource })
       }
     },
-    [state.ignitionMode],
+    [],
   )
 
   const handleMapClick = useCallback(

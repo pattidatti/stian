@@ -21,7 +21,7 @@ const FIRE_COLORS: Record<number, string> = {
   1: 'rgba(250,204,21,0.6)',
   2: 'rgba(249,115,22,0.7)',
   3: 'rgba(239,68,68,0.8)',
-  4: 'rgba(31,41,55,0.85)',
+  4: 'rgba(15,10,5,0.75)',   // dark ash — distinct from map tiles
 }
 
 const VEGETATION_COLORS: Record<string, string> = {
@@ -265,8 +265,11 @@ export default function MapView({
         drawResourceIcon(ctx, resource, Math.round(pt.x), Math.round(pt.y), pulse)
       }
 
-      // Schedule next animation frame for pulse updates
-      if (resources.some((r) => r.status !== 'idle') || grid.some((row) => row.some((c) => c.fireIntensity > 0 && c.fireIntensity < 4))) {
+      // Keep looping if anything is animated (pulsing icons or active fire)
+      const hasAnimation =
+        resources.some((r) => r.status !== 'idle') ||
+        grid.some((row) => row.some((c) => c.fireIntensity > 0 && c.fireIntensity < 4))
+      if (hasAnimation) {
         animFrameRef.current = requestAnimationFrame(render)
       }
     }

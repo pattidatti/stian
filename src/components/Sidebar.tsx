@@ -183,19 +183,21 @@ function KontrollerTab({
           className="w-full py-2 mb-3 text-xs tracking-widest transition-colors hover:opacity-80"
           style={{
             background: 'transparent',
-            border: '1px solid #374151',
-            color: '#9ca3af',
+            border: `1px solid ${!grid ? '#6b7280' : '#374151'}`,
+            color: !grid ? '#d1d5db' : '#9ca3af',
             fontFamily: 'Courier New, monospace',
             letterSpacing: '2px',
+            boxShadow: !grid ? '0 0 6px rgba(156,163,175,0.3)' : 'none',
           }}
         >
-          LAST TERRENGDATA
+          {!grid ? '▶ LAST TERRENGDATA' : 'LAST TERRENGDATA'}
         </button>
 
         {/* Ignition button */}
         <button
           onClick={() => dispatch({ type: 'SET_IGNITION_MODE', active: !ignitionMode })}
           disabled={!grid}
+          title={!grid ? 'Last terrengdata først' : undefined}
           className="w-full py-2 text-xs tracking-widest transition-colors hover:opacity-80 disabled:opacity-30"
           style={{
             background: ignitionMode ? '#ef4444' : 'transparent',
@@ -207,6 +209,12 @@ function KontrollerTab({
         >
           {ignitionMode ? '● KLIKK FOR Å SETTE ILD' : 'SETT ILD'}
         </button>
+
+        {!grid && (
+          <p style={{ fontSize: '10px', color: '#6b7280', textAlign: 'center', marginTop: '8px', letterSpacing: '1px' }}>
+            Last terrengdata for å aktivere brannsetting
+          </p>
+        )}
       </div>
 
       {phase === 'paused' && (

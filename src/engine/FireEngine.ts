@@ -128,7 +128,8 @@ export class FireEngine {
       }
     }
 
-    return this.grid
+    // Return a new outer-array reference so React detects the change
+    return [...this.grid]
   }
 
   private spreadProbability(source: GridCell, target: GridCell, spreadAngleDeg: number): number {
