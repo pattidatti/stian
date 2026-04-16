@@ -51,6 +51,7 @@ export default function MapView({
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const pixelCacheRef = useRef<Array<{ x: number; y: number; px: number }> | null>(null)
   const animFrameRef = useRef<number>(0)
+  const renderFnRef = useRef<(() => void) | null>(null)
   const mapInitialized = useRef(false)
 
   // Initialize Leaflet map
@@ -93,9 +94,13 @@ export default function MapView({
     }
 
     const onZoom = () => {
-      pixelCacheRef.current = null // invalidate cache
+      pixelCacheRef.current = null
       resizeCanvas()
       repositionCanvas()
+      cancelAnimationFrame(animFrameRef.current)
+      if (renderFnRef.current) {
+        animFrameRef.current = requestAnimationFrame(renderFnRef.current)
+      }
     }
 
     const onMove = () => {
@@ -274,6 +279,7 @@ export default function MapView({
       }
     }
 
+    renderFnRef.current = render
     animFrameRef.current = requestAnimationFrame(render)
 
     return () => cancelAnimationFrame(animFrameRef.current)
