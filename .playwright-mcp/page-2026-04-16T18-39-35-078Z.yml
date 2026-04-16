@@ -1,0 +1,83 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]: ▲ VIRTUAL SNOWFLAKE
+    - generic [ref=e6]:
+      - textbox "Søk sted eller adresse..." [ref=e7]
+      - button "🔍" [ref=e8] [cursor=pointer]
+    - generic [ref=e9]:
+      - generic [ref=e84]: TESTDATA
+      - button "FULLSKJERM" [ref=e10] [cursor=pointer]
+  - generic [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - button "K" [ref=e14] [cursor=pointer]
+        - button "R" [ref=e15] [cursor=pointer]
+        - button "T" [ref=e16] [cursor=pointer]
+        - button "S" [ref=e17] [cursor=pointer]
+      - generic [ref=e18]: KONTROLL
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: VINDRETNING
+          - generic [ref=e23]:
+            - img [ref=e24]:
+              - generic [ref=e26]: "N"
+              - generic [ref=e27]: S
+              - generic [ref=e28]: Ø
+              - generic [ref=e29]: V
+            - generic [ref=e33]:
+              - text: 45°
+              - generic [ref=e34]: NØ
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: VINDSTYRKE
+            - generic [ref=e38]: 5.0 m/s
+          - slider [ref=e39]: "5"
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e42]: TØRRHET
+            - generic [ref=e43]: 60%
+          - slider [ref=e44]: "60"
+        - generic [ref=e45]:
+          - generic [ref=e46]: ENERGINIVÅ
+          - generic [ref=e47]:
+            - button "LAV" [ref=e48] [cursor=pointer]
+            - button "MIDDEL" [ref=e49] [cursor=pointer]
+            - button "HØY" [ref=e50] [cursor=pointer]
+        - generic [ref=e51]:
+          - button "LAST TERRENGDATA" [ref=e52] [cursor=pointer]
+          - button "SETT ILD" [ref=e87] [cursor=pointer]
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - generic:
+          - generic [ref=e56]:
+            - button "Zoom in" [ref=e57] [cursor=pointer]: +
+            - button "Zoom out" [ref=e58] [cursor=pointer]: −
+          - generic [ref=e59]:
+            - link "Leaflet" [ref=e60] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e61]
+              - text: Leaflet
+            - text: "| ©"
+            - link "OpenStreetMap" [ref=e65] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/copyright
+            - text: ©
+            - link "CARTO" [ref=e66] [cursor=pointer]:
+              - /url: https://carto.com/attributions
+      - generic: "[ API UTILGJENGELIG — BRUKER TESTDATA ]"
+      - generic:
+        - img:
+          - generic: "N"
+  - generic [ref=e67]:
+    - generic [ref=e68]:
+      - button "⏮" [ref=e69] [cursor=pointer]
+      - button "⏸" [active] [ref=e88] [cursor=pointer]
+      - button "⏭" [ref=e71] [cursor=pointer]
+    - slider [ref=e73]: "9"
+    - generic [ref=e74]: 00:10
+    - generic [ref=e75]:
+      - button "½×" [ref=e76] [cursor=pointer]
+      - button "1×" [ref=e77] [cursor=pointer]
+      - button "2×" [ref=e78] [cursor=pointer]
+      - button "5×" [ref=e79] [cursor=pointer]
+      - button "10×" [ref=e80] [cursor=pointer]
+    - button "BRANCH HER" [ref=e81] [cursor=pointer]
